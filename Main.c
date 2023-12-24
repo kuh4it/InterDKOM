@@ -214,7 +214,10 @@ NTSTATUS DriverUnload(PDRIVER_OBJECT DriverObject)
 }
 
 /* This will NOT work with manual mappers such as KDMapper, KDU, etc.. 
-   To fix this, simply call IoCreateDriver with your new entry / driver initialization routine */
+   To fix this, simply call IoCreateDriver with your new entry / driver initialization routine 
+   
+   https://gist.github.com/ultracage/635d4e2b67cc6fae196531e1c49d1185
+*/
 
 _Function_class_(DRIVER_INITIALIZE)
 _IRQL_requires_(PASSIVE_LEVEL)
