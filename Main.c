@@ -90,14 +90,14 @@ ULONG_PTR BruteForceDirectoryTableBase()
     return directoryTableBase;
 }
 
-NTSTATUS ReadPhysicalMemory(PVOID destination, PHYSICAL_ADDRESS source, SIZE_T size)
+NTSTATUS ReadPhysicalMemory(PVOID destination, PHYSICAL_ADDRESS source, SIZE_T size, BOOL MapSystemVA)
 {
     PMDL memoryDescriptorList = MmCreateMdl(NULL, destination, size);
     if (!memoryDescriptorList)
         return STATUS_INSUFFICIENT_RESOURCES;
 
     MmBuildMdlForNonPagedPool(memoryDescriptorList);
-    memoryDescriptorList->MdlFlags |= MDL_MAPPED_TO_SYSTEM_VA;
+    if(MapSystemVA) memoryDescriptorList->MdlFlags |= MDL_MAPPED_TO_SYSTEM_VA;
 
     PVOID mappedMemory = MmMapLockedPagesSpecifyCache(memoryDescriptorList, KernelMode, MmNonCached, NULL, FALSE, NormalPagePriority);
     if (!mappedMemory)
